@@ -1,0 +1,41 @@
+{
+    //Enforcing options
+    "browser": true,
+    "bitwise": true,
+    "curly": true,
+    "eqeqeq": true,
+    "forin": true,
+    "immed": true,
+    "newcap": true,
+    "noarg": true,
+    "latedef": false,
+    "noempty": true,
+    "nonew": true,
+    "undef": true,
+    "unused": true,
+    "strict": true,
+    "maxcomplexity": 35,
+
+    //Relaxing options
+    "smarttabs": true,
+    "maxerr": 999,
+    "trailing": true,
+    "-W102": true,
+    "-W099": true,
+    "-W030": true,
+
+    //Environnement variables
+    "couch": true,
+    "node": true,
+    "yui": true,
+    "globals": {
+        "angular": false,
+        "define": false,
+        "describe": false,
+        "it": false,
+        "Highcharts": false,
+        "beforeEach": false,
+        "afterEach": false,
+        "phantom": false
+    }
+}

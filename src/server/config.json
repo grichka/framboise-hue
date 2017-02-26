@@ -1,0 +1,72 @@
+{
+    "server": {
+        "port": 3333,
+        "screenAnalyzer": "color"
+    },
+    "hue": {
+        "ip": "192.168.1.10"
+    },
+    "lights": [{
+        "id": "philips_1",
+        "zone": {
+            "x": 0,
+            "y": 0,
+            "width": 1280,
+            "height": 720
+        }
+    }, {
+        "id": "philips_2",
+        "zone": {
+            "x": 1280,
+            "y": 0,
+            "width": 1280,
+            "height": 720
+        }
+    }, {
+        "id": "philips_3",
+        "zone": {
+            "x": 0,
+            "y": 720,
+            "width": 1280,
+            "height": 720
+        }
+    }, {
+        "id": "philips_4",
+        "zone": {
+            "x": 1280,
+            "y": 720,
+            "width": 1280,
+            "height": 720
+        }
+    }, {
+        "id": "philips_5",
+        "zone": {
+            "x": 0,
+            "y": 0,
+            "width": 640,
+            "height": 1080
+        }
+    }],
+    "screenAnalyzer": {
+        "useZones": true,
+
+        "x": 0,
+        "y": 0,
+        "width": 1920,
+        "height": 1080,
+
+        "interval": 100,
+
+        "_colorMethod": "getScreenDominantColor",
+        "__colorMethod": "getScreenAverageColor",
+        "colorMethod": "getScreenBetterAverageColor",
+
+        "colorThiefQuality": 8,
+        "paletteColorCount": 5,
+        "canvasWidth": 480,
+        "canvasHeight": 270,
+        "lowThreshold": 10,
+        "midThreshold": 40,
+        "highThreshold": 145
+    }
+}
