@@ -61,6 +61,7 @@
         "__colorMethod": "getScreenDominantColor",
         "colorMethod": "getScreenAverageColor",
         "_colorMethod": "getScreenBetterAverageColor",
+        "___colorMethod": "getRandomColor",
 
         "colorThiefQuality": 8,
         "paletteColorCount": 5,

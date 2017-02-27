@@ -53,6 +53,26 @@ function ScreenAnalyzer(config) {
     this.midThreshold = _.get(config, 'screenAnalyzer.midThreshold', 40);
     this.highThreshold = _.get(config, 'screenAnalyzer.highThreshold', 145);
     
+    this.getRandomColor = function() {
+        var deferred = q.defer();
+        var that = this;
+        
+        var result = [];
+        that.lights.forEach(function(light) {
+            result.push({
+                id: light.id,
+                color: [
+                    ((Math.random() * 255) + 1) >> 0, // jshint ignore:line
+                    ((Math.random() * 255) + 1) >> 0, // jshint ignore:line
+                    ((Math.random() * 255) + 1) >> 0  // jshint ignore:line
+                ]
+            });
+        });
+        deferred.resolve(result);
+        
+        return deferred.promise;
+    };
+
     /**
      * Get the colors to apply to each light corresponding to screen dominant color.
      */
