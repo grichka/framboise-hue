@@ -21,4 +21,11 @@ app.listen(port, function() {
     console.log('Framboise Hue app listening on port', port);
 });
 
+// on Ctrl+C
+process.on('SIGINT', function () {
+    // log result
+    console.log('Bye!');
+    process.exit();
+});
+
 module.exports = app;

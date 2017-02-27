@@ -2,5 +2,4 @@
 
 src/server/.npmrc
 src/server/.tmp
-src/server/npm-debug.log
-.gitconfig
+**/npm-debug.log
