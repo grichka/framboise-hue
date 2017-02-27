@@ -53,6 +53,9 @@ function ScreenAnalyzer(config) {
     this.midThreshold = _.get(config, 'screenAnalyzer.midThreshold', 40);
     this.highThreshold = _.get(config, 'screenAnalyzer.highThreshold', 145);
     
+    /**
+     * Get the colors to apply to each light corresponding to screen dominant color.
+     */
     this.getScreenDominantColor = function() {
         var deferred = q.defer();
         var that = this;
@@ -74,6 +77,72 @@ function ScreenAnalyzer(config) {
                 });
                 deferred.resolve(result);
                 // }
+            });
+        } catch (e) {
+            deferred.reject(e);
+        }
+
+        return deferred.promise;
+    };
+    
+    /**
+     * Get the colors to apply to each light corresponding to screen average color.
+     */
+    this.getScreenAverageColor = function() {
+        var deferred = q.defer();
+        var that = this;
+
+        try {
+            var screenshotName = getScreenshotName('screenshotAverageColor');
+            var nircmd = childProcess.spawn(nircmdPath, ['savescreenshot', screenshotName, that.x, that.y, that.width, that.height]);
+            nircmd.on('close', function (/*code, signal*/) {
+                fs.readFile(screenshotName, function (err, screenshotBuffer) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        var img = new Image();
+                        img.src = screenshotBuffer;
+                        that.ctx.drawImage(img, 0, 0, that.canvasWidth, that.canvasHeight);
+
+                        var result = [];
+
+                        that.lights.forEach(function(light) {
+                            var r = 0,
+                                g = 0,
+                                b = 0,
+                                pixelCount = 0;
+                            var imageData;
+                            if(that.useZones) {
+                                imageData = that.ctx.getImageData((light.zone.x * that.canvasXScale) >> 0, (light.zone.y * that.canvasYScale) >> 0, (light.zone.width * that.canvasXScale) >> 0, (light.zone.height * that.canvasYScale) >> 0);//jshint ignore:line
+                                // imageData = that.ctx.getImageData(light.zone.x, light.zone.y, light.zone.width, light.zone.height);
+                            } else {
+                                imageData = that.ctx.getImageData((that.x * that.canvasXScale) >> 0, (that.y * that.canvasYScale) >> 0, (that.width * that.canvasXScale) >> 0, (that.height * that.canvasYScale) >> 0);//jshint ignore:line
+                                // imageData = that.ctx.getImageData(that.x, that.y, that.width, that.height);
+                            }
+                            var imageDataLength = imageData.data.length;
+                            // console.log(imageDataLength)
+
+                            var i;
+                            for(i = 0 ; i < imageDataLength ; i += 4) {
+                                ++pixelCount;
+                                r += imageData.data[i];
+                                g += imageData.data[i + 1];
+                                b += imageData.data[i + 2];
+                            }
+
+                            var rAvg = (r / pixelCount) >> 0,// jshint ignore:line
+                                gAvg = (g / pixelCount) >> 0,// jshint ignore:line
+                                bAvg = (b / pixelCount) >> 0;// jshint ignore:line
+                            
+                            result.push({
+                                id: light.id,
+                                color: [rAvg, gAvg, bAvg]
+                            });
+                        });
+
+                        deferred.resolve(result);
+                    }
+                });
             });
         } catch (e) {
             deferred.reject(e);
