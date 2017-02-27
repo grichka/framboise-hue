@@ -1,3 +1,86 @@
-function ScreenAnalyzer() {}
+'use strict';
+
+var path = require('path'),
+    _ = require('lodash'),
+    fs = require('fs'),
+    q = require('q'),
+    colorThief = new (require('color-thief'))(),
+    childProcess = require('child_process');    // exec and spawn
+
+var Canvas = require('canvas'),
+    Image = Canvas.Image;
+
+var nircmdPath = path.join(process.env.ROOT, 'lib', 'nircmd-x64', 'nircmd.exe');
+
+var screenshotNumber = {
+    screenshotAverageColor: 0,
+    screenshotBetterAverageColor: 0,
+    screenshotDominantColor: 0,
+    screenshotPalette: 0
+};
+var getScreenshotName = function(name) {
+    ++screenshotNumber[name];
+    if (screenshotNumber[name] % 10 === 0) {
+        screenshotNumber[name] = 0;
+    }
+    return path.join(process.env.ROOT, '.tmp', name + screenshotNumber[name] + '.png');
+};
+
+/**
+ * ScreenAnalyzer class.
+ * All of its functions return promises.
+ */
+function ScreenAnalyzer(config) {
+    this.useZones = _.get(config, 'screenAnalyzer.useZones', _.has(config, 'lights[0].zone'));
+    this.lights = _.get(config, 'lights', []);
+
+    this.x = _.get(config, 'screenAnalyzer.x', 0);
+    this.y = _.get(config, 'screenAnalyzer.y', 0);
+    this.width = _.get(config, 'screenAnalyzer.width', 1920);
+    this.height = _.get(config, 'screenAnalyzer.height', 1080);
+    this.interval = _.get(config, 'screenAnalyzer.interval', 100);
+    this.colorThiefQuality = _.get(config, 'screenAnalyzer.colorThiefQuality', 8);
+    this.paletteColorCount = _.get(config, 'screenAnalyzer.paletteColorCount', 5);
+    
+    this.canvasWidth = _.get(config, 'screenAnalyzer.canvasWidth', 480);
+    this.canvasHeight = _.get(config, 'screenAnalyzer.canvasHeight', 270);
+    this.ctx = new Canvas(this.canvasWidth, this.canvasHeight).getContext('2d');
+    // ctx.patternQuality('fast');
+    this.canvasXScale = this.canvasWidth / this.width;
+    this.canvasYScale = this.canvasHeight / this.height;
+
+    this.lowThreshold = _.get(config, 'screenAnalyzer.lowThreshold', 10);
+    this.midThreshold = _.get(config, 'screenAnalyzer.midThreshold', 40);
+    this.highThreshold = _.get(config, 'screenAnalyzer.highThreshold', 145);
+    
+    this.getScreenDominantColor = function() {
+        var deferred = q.defer();
+        var that = this;
+        
+        try {
+            var screenshotName = getScreenshotName('screenshotDominantColor');
+            var nircmd = childProcess.spawn(nircmdPath, ['savescreenshot', screenshotName, that.x, that.y, that.width, that.height]);
+            nircmd.on('close', function (/*code, signal*/) {
+                // if(that.useZones) {
+                //
+                // } else {
+                var color = colorThief.getColor(screenshotName, that.colorThiefQuality);
+                var result = [];
+                that.lights.forEach(function(light) {
+                    result.push({
+                        id: light.id,
+                        color: color
+                    });
+                });
+                deferred.resolve(result);
+                // }
+            });
+        } catch (e) {
+            deferred.reject(e);
+        }
+
+        return deferred.promise;
+    };
+}
 
 module.exports = ScreenAnalyzer;
