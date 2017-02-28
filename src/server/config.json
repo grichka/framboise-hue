@@ -74,8 +74,8 @@
         "height": 1080,
 
         "__colorMethod": "getScreenDominantColor",
-        "colorMethod": "getScreenAverageColor",
-        "_colorMethod": "getScreenBetterAverageColor",
+        "_colorMethod": "getScreenAverageColor",
+        "colorMethod": "getScreenBetterAverageColor",
         "___colorMethod": "getRandomColor",
 
         "colorThiefQuality": 8,
