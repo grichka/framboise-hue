@@ -264,8 +264,8 @@ function ScreenAnalyzer(config) {
                                 bAvg < that.lowThreshold ? that.lowThreshold : bAvg
                             ];
 
-                            // var darkRatio = (darkPixels / pixelCount) * 100
-                            var brightness = ((((darkPixels * light.maxBrightness - 1) * (light.maxBrightness - light.minBrightness)) / ((light.maxBrightness - 1) || 1)) + light.minBrightness + 1) >> 0; // jshint ignore:line
+                            // FIXME: add an intensity option to decrease this brightness globally
+                            var brightness = (( ((light.maxBrightness - ((darkPixels / pixelCount) * light.maxBrightness) - 1) * (light.maxBrightness - light.minBrightness)) / ((light.maxBrightness - 1) || 1)) + light.minBrightness + 1) >> 0; // jshint ignore:line
 
                             if(brightness < light.minBrightness) {
                                 brightness = light.minBrightness;
