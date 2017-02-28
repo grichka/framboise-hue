@@ -42,8 +42,8 @@ function ScreenAnalyzer(config) {
     this.colorThiefQuality = _.get(config, 'screenAnalyzer.colorThiefQuality', 8);
     this.paletteColorCount = _.get(config, 'screenAnalyzer.paletteColorCount', 5);
     
-    this.canvasWidth = _.get(config, 'screenAnalyzer.canvasWidth', 480);
-    this.canvasHeight = _.get(config, 'screenAnalyzer.canvasHeight', 270);
+    this.canvasWidth = _.get(config, 'screenAnalyzer.canvasWidth', 160);
+    this.canvasHeight = _.get(config, 'screenAnalyzer.canvasHeight', 90);
     this.ctx = new Canvas(this.canvasWidth, this.canvasHeight).getContext('2d');
     // ctx.patternQuality('fast');
     this.canvasXScale = this.canvasWidth / this.width;
@@ -53,19 +53,30 @@ function ScreenAnalyzer(config) {
     this.midThreshold = _.get(config, 'screenAnalyzer.midThreshold', 40);
     this.highThreshold = _.get(config, 'screenAnalyzer.highThreshold', 145);
     
+    /**
+     * Get random colors and brightness to apply to each light
+     */
     this.getRandomColor = function() {
         var deferred = q.defer();
         var that = this;
         
         var result = [];
         that.lights.forEach(function(light) {
+            var brightness = ((Math.random() * 255) + 1) >> 0; // jshint ignore:line
+            if(brightness < light.minBrightness) {
+                brightness = light.minBrightness;
+            } else if(brightness > light.maxBrightness) {
+                brightness = light.maxBrightness;
+            }
             result.push({
                 id: light.id,
                 color: [
                     ((Math.random() * 255) + 1) >> 0, // jshint ignore:line
                     ((Math.random() * 255) + 1) >> 0, // jshint ignore:line
                     ((Math.random() * 255) + 1) >> 0  // jshint ignore:line
-                ]
+                ],
+                brightness: brightness,
+                transition: light.transition || 0.7
             });
         });
         deferred.resolve(result);
@@ -92,7 +103,9 @@ function ScreenAnalyzer(config) {
                 that.lights.forEach(function(light) {
                     result.push({
                         id: light.id,
-                        color: color
+                        color: color,
+                        brightness: light.maxBrightness, // FIXME
+                        transition: light.transition || 0.7
                     });
                 });
                 deferred.resolve(result);
@@ -156,7 +169,9 @@ function ScreenAnalyzer(config) {
                             
                             result.push({
                                 id: light.id,
-                                color: [rAvg, gAvg, bAvg]
+                                color: [rAvg, gAvg, bAvg],
+                                brightness: light.maxBrightness, // FIXME
+                                transition: light.transition || 0.7
                             });
                         });
 

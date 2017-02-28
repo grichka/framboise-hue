@@ -13,7 +13,10 @@
             "y": 0,
             "width": 1280,
             "height": 720
-        }
+        },
+        "minBrightness": 1,
+        "maxBrightness": 254,
+        "transition": 0.7
     }, {
         "id": "philips_2",
         "zone": {
@@ -21,7 +24,10 @@
             "y": 0,
             "width": 1280,
             "height": 720
-        }
+        },
+        "minBrightness": 1,
+        "maxBrightness": 254,
+        "transition": 0.7
     }, {
         "id": "philips_3",
         "zone": {
@@ -29,7 +35,10 @@
             "y": 360,
             "width": 1280,
             "height": 720
-        }
+        },
+        "minBrightness": 1,
+        "maxBrightness": 254,
+        "transition": 0.7
     }, {
         "id": "philips_4",
         "zone": {
@@ -37,7 +46,10 @@
             "y": 360,
             "width": 1280,
             "height": 720
-        }
+        },
+        "minBrightness": 1,
+        "maxBrightness": 254,
+        "transition": 0.7
     }, {
         "id": "philips_5",
         "zone": {
@@ -45,7 +57,10 @@
             "y": 0,
             "width": 640,
             "height": 1080
-        }
+        },
+        "minBrightness": 1,
+        "maxBrightness": 254,
+        "transition": 0.7
     }],
     "analysis": {
         "interval": 100
@@ -67,6 +82,7 @@
         "paletteColorCount": 5,
         "canvasWidth": 480,
         "canvasHeight": 270,
+
         "lowThreshold": 10,
         "midThreshold": 40,
         "highThreshold": 145
