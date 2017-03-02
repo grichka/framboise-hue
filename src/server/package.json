@@ -4,7 +4,10 @@
   "description": "Analyse screen color and system sounds and control philips hue lights",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --require test/setup.js --check-leaks --reporter spec **/*.spec.js",
+    "test-tap": "mocha --require test/setup.js --check-leaks --reporter tap **/*.spec.js",
+    "test-coverage": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --require test/setup.js --reporter spec --check-leaks **/*.spec.js",
+    "test-ci": "mocha --require test/setup.js --check-leaks --reporter tap **/*.spec.js > test-results.tap && istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --require test/setup.js --reporter spec --check-leaks **/*.spec.js"
   },
   "keywords": [
     "philips",
@@ -26,5 +29,12 @@
     "lodash": "4.17.4",
     "q": "1.4.1",
     "request": "2.79.0"
+  },
+  "devDependencies": {
+    "chai": "3.5.0",
+    "istanbul": "0.4.5",
+    "mocha": "3.2.0",
+    "supertest": "3.0.0",
+    "tap": "10.2.2"
   }
 }

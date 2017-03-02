@@ -56,7 +56,7 @@ function ScreenAnalyzer(config) {
     /**
      * Get random colors and brightness to apply to each light
      */
-    this.getRandomColor = function() {
+    this.getRandomColors = function() {
         var deferred = q.defer();
         var that = this;
         
@@ -87,7 +87,7 @@ function ScreenAnalyzer(config) {
     /**
      * Get the colors to apply to each light corresponding to screen dominant color.
      */
-    this.getScreenDominantColor = function() {
+    this.getScreenDominantColors = function() {
         var deferred = q.defer();
         var that = this;
         
@@ -121,7 +121,7 @@ function ScreenAnalyzer(config) {
     /**
      * Get the colors to apply to each light corresponding to screen average color.
      */
-    this.getScreenAverageColor = function() {
+    this.getScreenAverageColors = function() {
         var deferred = q.defer();
         var that = this;
 
@@ -194,7 +194,7 @@ function ScreenAnalyzer(config) {
      * Get the colors to apply to each light corresponding to screen average color.
      * Uses thresholds and calculates dark pixels ratio to determine the brightness to apply.
      */
-    this.getScreenBetterAverageColor = function() {
+    this.getScreenBetterAverageColors = function() {
         var deferred = q.defer();
         var that = this;
 
@@ -241,7 +241,7 @@ function ScreenAnalyzer(config) {
                                     ++darkPixels;
                                 }
                                 // don't count pixels that are too light
-                                else if (red > that.highThreshold && green > that.highThreshold && blue > that.highThreshold) {
+                                else if (red > that.highThreshold && green > that.highThreshold && blue > that.highThreshold) { // jshint ignore:line
                                     // nothing
                                 } else {
                                     if(red < that.midThreshold && green < that.midThreshold && blue < that.midThreshold) {

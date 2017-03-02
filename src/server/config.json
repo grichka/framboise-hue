@@ -73,10 +73,10 @@
         "width": 1920,
         "height": 1080,
 
-        "__colorMethod": "getScreenDominantColor",
-        "_colorMethod": "getScreenAverageColor",
-        "colorMethod": "getScreenBetterAverageColor",
-        "___colorMethod": "getRandomColor",
+        "__colorMethod": "getScreenDominantColors",
+        "_colorMethod": "getScreenAverageColors",
+        "colorMethod": "getScreenBetterAverageColors",
+        "___colorMethod": "getRandomColors",
 
         "colorThiefQuality": 8,
         "paletteColorCount": 5,
