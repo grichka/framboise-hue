@@ -1,11 +1,12 @@
 'use strict';
 
 var path = require('path'),
+    fs = require('fs'),
     _ = require('lodash'),
     express = require('express'),
     app = express(),
 
-    config = require(path.join(__dirname, 'config.json')),
+    config = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json'))),
     port = _.get(config, 'server.port', 3333);
 
 // process env variables

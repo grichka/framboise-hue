@@ -3,5 +3,6 @@ coverage
 
 src/server/.npmrc
 src/server/.tmp
+**/.nyc_output
 **/npm-debug.log
 test-results.tap

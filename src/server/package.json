@@ -5,9 +5,21 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha --require test/setup.js --check-leaks --reporter spec **/*.spec.js",
+    "nyc": "nyc npm test",
     "test-tap": "mocha --require test/setup.js --check-leaks --reporter tap **/*.spec.js",
     "test-coverage": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --require test/setup.js --reporter spec --check-leaks **/*.spec.js",
-    "test-ci": "mocha --require test/setup.js --check-leaks --reporter tap **/*.spec.js > test-results.tap && istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --require test/setup.js --reporter spec --check-leaks **/*.spec.js"
+    "test-ci": "mocha --require test/setup.js --check-leaks --reporter tap **/*.spec.js > test-results.tap && istanbul cover node_modules/mocha/bin/_mocha -- --require test/setup.js --reporter spec --check-leaks **/*.spec.js"
+  },
+  "nyc": {
+    "all": true,
+    "exclude": [
+      "**/*.spec.js",
+      "coverage"
+    ],
+    "include": [
+      "**/*.js",
+      "server.js"
+    ]
   },
   "keywords": [
     "philips",
@@ -27,6 +39,7 @@
     "express": "4.14.1",
     "express-validator": "3.1.2",
     "lodash": "4.17.4",
+    "node-hue-api": "2.4.1",
     "q": "1.4.1",
     "request": "2.79.0"
   },
@@ -34,6 +47,7 @@
     "chai": "3.5.0",
     "istanbul": "0.4.5",
     "mocha": "3.2.0",
+    "nyc": "^10.1.2",
     "supertest": "3.0.0",
     "tap": "10.2.2"
   }
